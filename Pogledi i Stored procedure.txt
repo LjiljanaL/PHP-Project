@@ -1,0 +1,21 @@
+RESENJE - POGLEDI
+------------------------------------------
+CREATE VIEW `Ispiti`.`SviPodacioIspitima` AS SELECT `ispitna prijava`.`OznakaIspita`, `korisnik`.`IME`, `korisnik`.`PREZIME`, `predmet`.`NazivPredmeta`, `rok`.`NazivRoka`, `raspored ispita`.`DatumPrviTermin`, `raspored ispita`.`DatumDrugiTermin` 
+FROM `ispitna prijava` INNER JOIN `korisnik` ON `ispitna prijava`.`Student` = `korisnik`.`IDKORISNIKA`INNER JOIN `predmet` ON `ispitna prijava`.`Predmet` = `predmet`.`OznakaPredmeta` INNER JOIN `rok` ON `ispitna prijava`.`IspitniRok` = `rok`.`OznakaRoka` 
+INNER JOIN `raspored ispita` ON `rok`.`OznakaRoka` = `raspored ispita`.`Rok`;
+
+CREATE VIEW `ispiti`.`SviPodacioIspitnimPrijavama` AS SELECT `ispitna prijava`.`OznakaIspita`, `korisnik`.`IME`, `korisnik`.`PREZIME`, `predmet`.`NazivPredmeta`, `rok`.`NazivRoka`, `ispitna prijava`.`Termin` FROM `ispitna prijava` INNER JOIN `korisnik` 
+ON `ispitna prijava`.`Student` = `korisnik`.`IDKORISNIKA`INNER JOIN `predmet` ON `ispitna prijava`.`Predmet` = `predmet`.`OznakaPredmeta` INNER JOIN `rok` ON `ispitna prijava`.`IspitniRok` = `rok`.`OznakaRoka`;
+
+RESENJE ZA STORED PROCEDURU- insert into
+-----------------------
+USE `Ispiti`;
+DROP procedure IF EXISTS `DodajIspitnuPrijavu`;
+DELIMITER $$
+USE `Ispiti`$$
+CREATE PROCEDURE `DodajIspitnuPrijavu` (IN OznakaIspitaParametar char(2), IN StudentParametar int(11), IN IspitniRokParametar char(2), IN PredmetParametar char(2), IN TerminParametar char(2))
+BEGIN
+INSERT INTO `ISPITNA PRIJAVA` (`OznakaIspita`, `Student`, `IspitniRok`, `Predmet`, `Termin`) VALUES (OznakaIspitaParametar, StudentParametar, IspitniRokParametar, PredmetParametar, TerminParametar);
+END
+$$
+DELIMITER ;
