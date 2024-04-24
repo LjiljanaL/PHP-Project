@@ -1,0 +1,62 @@
+﻿
+CREATE DATABASE `Ispiti` CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE `Ispiti`. `ispitna prijava` (
+  `OznakaIspita` int(11) NOT NULL,
+  `Student` int(11) NOT NULL,
+  `IspitniRok` char(2) NOT NULL,
+  `Predmet` char(2) NOT NULL,
+  `Termin` char(2) NOT NULL
+) ;
+
+CREATE TABLE `Ispiti`. `korisnik` (
+  `IDKORISNIKA` int(11) NOT NULL,
+  `PREZIME` varchar(50) NOT NULL,
+  `IME` varchar(40) NOT NULL,
+  `EMAIL` varchar(60) NOT NULL,
+  `KORISNICKOIME` varchar(30) NOT NULL,
+  `SIFRA` varchar(30) NOT NULL
+);
+
+CREATE TABLE `Ispiti`. `predmet` (
+  `OznakaPredmeta` char(2) NOT NULL,
+  `NazivPredmeta` varchar(50) NOT NULL,
+  `Rok` char(2) NOT NULL
+);
+
+CREATE TABLE `Ispiti`. `rok` (
+  `OznakaRoka` char(2) NOT NULL,
+  `NazivRoka` varchar(50) NOT NULL,
+  `UkupanBrojStudenata` int(11) NOT NULL
+);
+
+CREATE TABLE `Ispiti`. `raspored ispita` (
+  `ID` int(11) NOT NULL,
+  `Rok` char(2) NOT NULL,
+  `DatumPrviTermin` date NOT NULL,
+  `DatumDrugiTermin` date NOT NULL,
+  `Predmet` char(2) NOT NULL
+);
+
+alter table `Ispiti`.`ISPITNA PRIJAVA` add constraint FK_ISPITNA_PRIJAVA_ROK foreign key (IspitniRok) references `Ispiti`.`ROK` (OznakaRoka) on delete restrict on update cascade;
+alter table `Ispiti`.`ISPITNA PRIJAVA` add constraint FK_ISPITNA_PRIJAVA_PREDMET foreign key (Predmet) references `Ispiti`.`PREDMET` (OznakaPredmeta) on delete restrict on update cascade;
+alter table `Ispiti`.`ISPITNA PRIJAVA` add constraint FK_ISPITNA_PRIJAVA_STUDENT foreign key (Student) references `Ispiti`.`KORISNIK` (IDKORISNIKA) on delete restrict on update cascade;
+alter table `Ispiti`.`RASPORED ISPITA` add constraint FK_RASPORED_ISPITA_ROK foreign key (Rok) references `Ispiti`.`ROK` (OznakaRoka) on delete restrict on update cascade;
+alter table `Ispiti`.`RASPORED ISPITA` add constraint FK_RASPORED_ISPITA_PREDMET foreign key (Predmet) references `Ispiti`.`PREDMET` (OznakaPredmeta) on delete restrict on update cascade;
+alter table `Ispiti`.`PREDMET` add constraint FK_PREDMET_ROK foreign key (Rok) references `Ispiti`.`ROK` (OznakaRoka) on delete restrict on update cascade;
+
+INSERT INTO `Ispiti`.`KORISNIK` (PREZIME, IME, EMAIL, KORISNICKOIME, SIFRA) VALUES ('Лучић','Љиљана', 'ljiljanalucic@hotmail.com', 'ljilja', 'lj');
+INSERT INTO `Ispiti`.`KORISNIK` (PREZIME, IME, EMAIL, KORISNICKOIME, SIFRA) VALUES ('Марковић','Марко', 'markomarkovic@hotmail.com', 'marko', 'm');
+
+INSERT INTO `Ispiti`.`ROK` (Oznaka, Naziv, UkupanBrojStudenata) VALUES ('JA', 'Јануарски рок',0);
+INSERT INTO `Ispiti`.`ROK` (Oznaka, Naziv, UkupanBrojStudenata) VALUES ('AP', 'Априлски рок',0);
+
+INSERT INTO `Ispiti`.`PREDMET` (OznakaPredmeta, NazivPredmeta) VALUES ('1', 'Интернет програмирање');
+INSERT INTO `Ispiti`.`PREDMET` (OznakaPredmeta, NazivPredmeta) VALUES ('2', 'Тестирање софтвера');
+
+INSERT INTO `Ispiti`. `raspored ispita` (`ID`, `Rok`, `DatumPrviTermin`, `DatumDrugiTermin`, `Predmet`) VALUES (1, 'JA', '2023-01-24', '2023-01-29', '1');
+INSERT INTO `Ispiti`. `raspored ispita` (`ID`, `Rok`, `DatumPrviTermin`, `DatumDrugiTermin`, `Predmet`) VALUES (2, 'АР', '2023-04-05', '2023-04-08', '2');
+INSERT INTO `Ispiti`. `raspored ispita` (`ID`, `Rok`, `DatumPrviTermin`, `DatumDrugiTermin`, `Predmet`) VALUES (3, 'JN', '2023-06-13', '2023-06-17', '3');
+INSERT INTO `Ispiti`. `raspored ispita` (`ID`, `Rok`, `DatumPrviTermin`, `DatumDrugiTermin`, `Predmet`) VALUES (4, 'JL', '2023-07-04', '2023-07-07', '4');
+
+
